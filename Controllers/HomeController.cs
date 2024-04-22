@@ -21,18 +21,11 @@ namespace AppCrud.Controllers
             _empleadoRepository = empleadoRepository;
         }
 
-        public async IActionResult Index()
+        public IActionResult Index()
         {
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> listaEmpleado()
-        {
-            
-            List<Empleado> _lista = await _empleadoRepository.Lista();
-            return StatusCode(StatusCodes.Status200OK, _lista);
-        }
         [HttpGet]
         public async Task<IActionResult> listaDepartamentos()
         {
@@ -40,6 +33,15 @@ namespace AppCrud.Controllers
             List<Departamento> _lista = await _departamentoRepository.Lista();
             return StatusCode(StatusCodes.Status200OK, _lista);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> listaEmpleados()
+        {
+            
+            List<Empleado> _lista = await _empleadoRepository.Lista();
+            return StatusCode(StatusCodes.Status200OK, _lista);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> guardarEmpleado([FromBody] Empleado modelo)
