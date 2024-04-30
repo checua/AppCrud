@@ -2,14 +2,13 @@
 using AppCrud.Repositorios.Contrato;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics.Eventing.Reader;
+using System.Reflection;
 
 namespace AppCrud.Repositorios.Implementacion
 {
     public class EmpleadoRepository : IGenericRepository<Empleado>
     {
         private readonly string _cadenaSQL = "";
-
         public EmpleadoRepository(IConfiguration configuracion)
         {
             _cadenaSQL = configuracion.GetConnectionString("cadenaSQL");
@@ -42,18 +41,19 @@ namespace AppCrud.Repositorios.Implementacion
                             fechaContrato = dr["fechaContrato"].ToString(),
                         });
                     }
+
                 }
+
             }
 
             return _lista;
         }
-
         public async Task<bool> Guardar(Empleado modelo)
         {
             using (var conexion = new SqlConnection(_cadenaSQL))
             {
                 conexion.Open();
-                SqlCommand cmd = new SqlCommand("sp_GuardarEmpleados", conexion);
+                SqlCommand cmd = new SqlCommand("sp_GuardarEmpleado", conexion);
                 cmd.Parameters.AddWithValue("nombreCompleto", modelo.nombreCompleto);
                 cmd.Parameters.AddWithValue("idDepartamento", modelo.refDepartamento.idDepartamento);
                 cmd.Parameters.AddWithValue("sueldo", modelo.sueldo);
@@ -68,7 +68,6 @@ namespace AppCrud.Repositorios.Implementacion
                     return false;
             }
         }
-
 
         public async Task<bool> Editar(Empleado modelo)
         {
@@ -102,14 +101,13 @@ namespace AppCrud.Repositorios.Implementacion
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 int filas_afectadas = await cmd.ExecuteNonQueryAsync();
+
                 if (filas_afectadas > 0)
                     return true;
                 else
                     return false;
             }
         }
-
-
 
 
     }

@@ -29,49 +29,53 @@ namespace AppCrud.Controllers
         [HttpGet]
         public async Task<IActionResult> listaDepartamentos()
         {
-
             List<Departamento> _lista = await _departamentoRepository.Lista();
+
             return StatusCode(StatusCodes.Status200OK, _lista);
         }
 
         [HttpGet]
         public async Task<IActionResult> listaEmpleados()
         {
-            
             List<Empleado> _lista = await _empleadoRepository.Lista();
+
             return StatusCode(StatusCodes.Status200OK, _lista);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> guardarEmpleado([FromBody] Empleado modelo)
         {
-
             bool _resultado = await _empleadoRepository.Guardar(modelo);
-            if(_resultado)
-                return StatusCode(StatusCodes.Status200OK, new {valor = _resultado, msg = "ok"});
-            return StatusCode(StatusCodes.Status500InternalServerError, new { valor = _resultado, msg = "Eorror" });
+
+            if (_resultado)
+                return StatusCode(StatusCodes.Status200OK, new { valor = _resultado, msg = "ok" });
+            else
+                return StatusCode(StatusCodes.Status500InternalServerError, new { valor = _resultado, msg = "errror" });
         }
 
         [HttpPut]
         public async Task<IActionResult> editarEmpleado([FromBody] Empleado modelo)
         {
-
             bool _resultado = await _empleadoRepository.Editar(modelo);
+
             if (_resultado)
                 return StatusCode(StatusCodes.Status200OK, new { valor = _resultado, msg = "ok" });
-            return StatusCode(StatusCodes.Status500InternalServerError, new { valor = _resultado, msg = "Eorror" });
+            else
+                return StatusCode(StatusCodes.Status500InternalServerError, new { valor = _resultado, msg = "errror" });
         }
 
         [HttpDelete]
         public async Task<IActionResult> eliminarEmpleado(int idEmpleado)
         {
-
             bool _resultado = await _empleadoRepository.Eliminar(idEmpleado);
+
             if (_resultado)
                 return StatusCode(StatusCodes.Status200OK, new { valor = _resultado, msg = "ok" });
-            return StatusCode(StatusCodes.Status500InternalServerError, new { valor = _resultado, msg = "Eorror" });
+            else
+                return StatusCode(StatusCodes.Status500InternalServerError, new { valor = _resultado, msg = "errror" });
         }
+
+
 
 
         public IActionResult Privacy()
